@@ -1,0 +1,18 @@
+﻿@using Workshop.Library
+@using Workshop.ViewModels
+
+<Condition Check="Item != null">
+  <If>
+    <span> @Item?.Name (@Item?.PriceString)</span>
+  </If>
+  <Else>
+    <span>Loading...</span>
+  </Else>
+</Condition>
+
+@code {
+
+  [Parameter, EditorRequired]
+  public ProductViewModel Item { get; set; } = default!;
+
+}

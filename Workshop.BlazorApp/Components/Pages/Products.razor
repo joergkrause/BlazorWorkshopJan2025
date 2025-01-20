@@ -1,0 +1,39 @@
+﻿@page "/products"
+@using Workshop.BlazorApp.Components.Pages.ProductsParts
+@using Workshop.BlazorApp.Components._Shared
+@using Workshop.Datasource
+@using Workshop.Library
+@using Workshop.ViewModels
+
+@inject IProductsRepository ProductsRepo
+
+
+
+<PageHeader>
+  <Count># @ProductList.Count</Count>
+  <Title><i>@Title</i></Title>
+</PageHeader>
+<button class="btn btn-success" @onclick="AddProduct">Add Product</button>
+<ul>
+  <Repeater TItem="ProductViewModel" Items="ProductList.Products">
+    <ItemTemplate>
+      <li @key="@context.Id">
+        <ProductItem Item="@context"></ProductItem>
+      </li>
+    </ItemTemplate>
+  </Repeater>
+</ul>
+
+
+@code {
+
+  private string Title => "Products"; // resx
+  private ProductListViewModel ProductList => ProductsRepo.GetProducts();
+
+  private void AddProduct()
+  {
+    var newProduct = new ProductViewModel { Name = "New Product", Price = 150 };
+    ProductsRepo.AddProduct(newProduct);
+  }
+
+}

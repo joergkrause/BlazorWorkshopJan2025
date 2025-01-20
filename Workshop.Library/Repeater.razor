@@ -1,0 +1,30 @@
+﻿@typeparam TItem
+
+@if (Items?.Any() == false)
+{
+  <p>Loading...</p>
+}
+else
+{
+  @if (ItemTemplate == null)
+  {
+    <div class="text-warning">No template!</div>
+  }
+  else
+  {
+    @foreach (var item in Items ?? [])
+    {
+      @ItemTemplate(item)
+    }
+  }
+}
+
+@code {
+
+  [Parameter, EditorRequired]
+  public IEnumerable<TItem>? Items { get; set; } = [];
+
+  [Parameter, EditorRequired]
+  public RenderFragment<TItem>? ItemTemplate { get; set; }
+
+}
