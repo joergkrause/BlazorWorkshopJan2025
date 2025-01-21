@@ -86,7 +86,7 @@
 
   private async Task Copy(ProductViewModel product)
   {
-    await JSRuntime.InvokeVoidAsync("copyTextToClipboard", $"{product.Name} #{product.Id}", badgeSpan);
+    await JSRuntime.InvokeVoidAsync("copyTextToClipboard", $"{product.Name} #{product.Id}", badgeSpan);    
   }
 
 }
