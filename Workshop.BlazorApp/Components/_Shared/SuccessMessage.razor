@@ -1,0 +1,48 @@
+﻿@implements IDisposable
+
+@if (visible)
+{
+  <div class="alert alert-success" role="alert">
+    @ChildContent
+  </div>
+}
+
+@code {
+
+  private Timer? _timer;
+  private bool visible = true;
+
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+
+  [Parameter]
+  public int Duration { get; set; } = 5000;
+
+  [Parameter]
+  public bool Visible { get; set; }
+
+  protected override void OnParametersSet()
+  {
+    if (Visible)
+    {
+      visible = true;
+      _timer?.Dispose();
+      _timer = new Timer(OnTimerElapsed, null, Duration, Timeout.Infinite);
+    } else
+    {
+      visible = false;
+    }
+  }
+
+  private void OnTimerElapsed(object? state)
+  {
+    visible = false;
+    InvokeAsync(StateHasChanged);
+  }
+
+  public void Dispose()
+  {
+    _timer?.Dispose();
+  }
+
+}

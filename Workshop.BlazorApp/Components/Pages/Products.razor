@@ -18,7 +18,7 @@
   <Repeater TItem="ProductViewModel" Items="ProductList.Products">
     <ItemTemplate>
       <li @key="@context.Id">
-        <ProductItem Item="@context"></ProductItem> <NavLink href="@context.EditLink">Edit</NavLink> 
+        <ProductItem Item="@context"></ProductItem> <NavLink href="@context.EditLink">Edit</NavLink>
         <button class="btn btn-danger btn-sm" @onclick="@(() => DeleteProduct(context.Id))">Delete</button>
       </li>
     </ItemTemplate>
@@ -26,15 +26,19 @@
 </ul>
 <Condition Check="deleteId != 0">
   <If>
-    <DeleteProduct Id="deleteId" Changed="ProductListChanged"></DeleteProduct>
+    <DeleteProduct Id="deleteId" Changed="ProductListChanged" Result="DeleteResult"></DeleteProduct>
   </If>
 </Condition>
+<SuccessMessage Duration="3000" Visible="deleteResult">
+  Product deleted
+</SuccessMessage>
 
 @code {
 
   private string Title => "Products"; // resx
   private ProductListViewModel ProductList => ProductsRepo.GetProducts();
   private int deleteId;
+  private bool deleteResult;
 
   private void AddProduct()
   {
@@ -51,6 +55,15 @@
   {
     deleteId = 0;
     StateHasChanged();
+  }
+
+  private void DeleteResult(bool result)
+  {
+    deleteResult = result;
+    // if (result)
+    // {
+    //   ProductListChanged();
+    // }
   }
 
 }

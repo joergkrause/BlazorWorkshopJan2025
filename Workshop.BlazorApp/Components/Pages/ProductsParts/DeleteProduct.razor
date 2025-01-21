@@ -22,6 +22,9 @@
   [Parameter]
   public EventCallback Changed { get; set; }
 
+  [Parameter]
+  public EventCallback<bool> Result { get; set; }
+
   protected override void OnParametersSet()
   {
     Console.WriteLine($"DeleteProduct.OnParametersSet: Id={Id}");    
@@ -31,7 +34,8 @@
 
   private async Task Delete()
   {
-    ProductsRepo.DeleteProduct(Id);
+    var result = ProductsRepo.DeleteProduct(Id);
+    await NotifyResult(result);
     await NotifyChanged();
   }
 
@@ -40,6 +44,14 @@
     if (Changed.HasDelegate)
     {
       await Changed.InvokeAsync();
+    }
+  }
+
+  private async Task NotifyResult(bool result)
+  {
+    if (Result.HasDelegate)
+    {
+      await Result.InvokeAsync(result);
     }
   }
 
