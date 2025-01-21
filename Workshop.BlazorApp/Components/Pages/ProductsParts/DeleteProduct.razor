@@ -1,7 +1,9 @@
 ﻿@using Workshop.BlazorApp.Components._Shared
 @using Workshop.Datasource
 @using Workshop.ViewModels
+
 @inject IProductsRepository ProductsRepo
+@inject NavigationManager Navigation
 
 <PageHeader>
   <Title>
@@ -12,6 +14,7 @@
 <div class="alert alert-danger" role="alert">
   Do you really want to delete product '@Product?.Name'?
   <button class="btn btn-secondary" @onclick="Delete">Delete</button>
+  <button class="btn btn-warning" @onclick="Cancel">Cancel</button>
 </div>
 
 @code {
@@ -37,6 +40,14 @@
     var result = ProductsRepo.DeleteProduct(Id);
     await NotifyResult(result);
     await NotifyChanged();
+  }
+
+  private void Cancel()
+  { 
+    // Variant 1
+    Navigation.NavigateTo("/products?fromDelete=true", true);
+    // Variant 2
+    // Navigation.NavigateTo("/products/command/FromDelete", true);
   }
 
   private async Task NotifyChanged()

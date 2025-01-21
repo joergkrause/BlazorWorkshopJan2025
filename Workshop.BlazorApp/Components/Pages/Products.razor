@@ -1,5 +1,7 @@
 ﻿@page "/products"
+@page "/products/command/{Command:alpha}"
 
+@using Microsoft.AspNetCore.WebUtilities
 @using Workshop.BlazorApp.Components.Pages.ProductsParts
 @using Workshop.BlazorApp.Components._Shared
 @using Workshop.Datasource
@@ -7,7 +9,7 @@
 @using Workshop.ViewModels
 
 @inject IProductsRepository ProductsRepo
-
+@inject NavigationManager Navigation
 
 <PageHeader>
   <Count># @ProductList.Count</Count>
@@ -39,6 +41,18 @@
   private ProductListViewModel ProductList => ProductsRepo.GetProducts();
   private int deleteId;
   private bool deleteResult;
+
+  [Parameter]
+  public string? Command { get; set; }
+
+  protected override void OnParametersSet()
+  {    
+    var query = new Uri(Navigation.Uri).Query;
+    var @params = QueryHelpers.ParseQuery(query);
+    if (@params.TryGetValue("fromDelete", out var fromDelete)) {
+      var val = fromDelete.ToString();
+    }
+  }
 
   private void AddProduct()
   {

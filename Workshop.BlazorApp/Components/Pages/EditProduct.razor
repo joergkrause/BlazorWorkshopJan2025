@@ -6,6 +6,7 @@
 @using Workshop.ViewModels
 
 @inject IProductsRepository ProductsRepo
+@inject NavigationManager Navigation
 
 <PageHeader>
   <Title>
@@ -15,28 +16,50 @@
 </PageHeader>
 <Condition Check="Product != null">
   <If>
-    <dl class="row">
-      <dt class="col-sm-3">Name</dt>
-      <dd class="col-sm-9">@Product?.Name</dd>
-    </dl>
-    <dl class="row">
-      <dt class="col-sm-3">Price</dt>
-      <dd class="col-sm-9">@Product?.PriceString</dd>
-    </dl>
+    <EditForm Model="Product" OnValidSubmit="Save">
+      <DataAnnotationsValidator />
+      <ValidationSummary />
+
+      <TextEdit For="@(() => Product.Name)" Item="Product" @bind-Value="Product.Name"></TextEdit>
+
+      <label for="Price"><u>P</u>rice</label>
+      <div class="input-group">        
+        <InputNumber id="Price" accesskey="P" tabindex="20" class="form-control" @bind-Value="Product.Price" />
+        <div class="input-group-text">&euro;</div>
+        <ValidationMessage For="@(() => Product.Price)"></ValidationMessage>
+      </div>
+      <button type="submit" class="btn btn-outline-success m-2">Save</button>
+    </EditForm>
   </If>
   <Else>No Product!</Else>
 </Condition>
+<button class="btn btn-warning" @onclick="Cancel">Cancel</button>
 
 @code {
 
   [Parameter]
   public int Id { get; set; }
 
-  private ProductViewModel? Product { get; set; }
+  private ProductEditViewModel? Product { get; set; }
 
   protected override void OnInitialized()
   {
-    Product = ProductsRepo.GetProduct(Id);
+    var product = ProductsRepo.GetProduct(Id);
+    Product = new ProductEditViewModel
+      {
+        Name = product.Name,
+        Price = product.Price
+      };
+  }
+
+  private void Cancel()
+  {
+    Navigation.NavigateTo("/products");
+  }
+
+  private void Save()
+  {
+    
   }
 
 }
