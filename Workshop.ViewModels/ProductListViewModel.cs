@@ -1,8 +1,10 @@
-﻿namespace Workshop.ViewModels
+﻿using System.Collections.ObjectModel;
+
+namespace Workshop.ViewModels
 {
-  public class ProductListViewModel
+  public class ProductListViewModel(ObservableCollection<ProductViewModel> products)
   {
-    public IList<ProductViewModel> Products { get; set; } = [];
+    public ObservableCollection<ProductViewModel> Products { get; set; } = products;
 
     public int Count => Products.Count;
   }

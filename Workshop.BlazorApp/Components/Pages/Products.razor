@@ -26,7 +26,7 @@
 </ul>
 <Condition Check="deleteId != 0">
   <If>
-    <DeleteProduct Id="deleteId"></DeleteProduct>
+    <DeleteProduct Id="deleteId" Changed="ProductListChanged"></DeleteProduct>
   </If>
 </Condition>
 
@@ -45,6 +45,12 @@
   private void DeleteProduct(int id)
   {
     deleteId = id;
+  }
+
+  private void ProductListChanged()
+  {
+    deleteId = 0;
+    StateHasChanged();
   }
 
 }

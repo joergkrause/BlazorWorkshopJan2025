@@ -1,33 +1,29 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Collections.ObjectModel;
 using Workshop.ViewModels;
 
 namespace Workshop.Datasource
 {
   public class ProductsRepository : IProductsRepository
   {
-
-    private IList<Product> products = [];
+    private ObservableCollection<ProductViewModel> products;
 
     public ProductsRepository(IConfiguration configuration)
     {
-      products = new List<Product>
-      {
-        new Product { Id = 1, Name = "Product 1", Price = 100 },
-        new Product { Id = 2, Name = "Product 2", Price = 200 },
-        new Product { Id = 3, Name = "Product 3", Price = 300 },
-        new Product { Id = 4, Name = "Product 4", Price = 400 },
-        new Product { Id = 5, Name = "Product 5", Price = 500 },
-      };
+      products = new ()
+            {
+                new ProductViewModel { Id = 1, Name = "Product 1", Price = 100 },
+                new ProductViewModel { Id = 2, Name = "Product 2", Price = 200 },
+                new ProductViewModel { Id = 3, Name = "Product 3", Price = 300 },
+                new ProductViewModel { Id = 4, Name = "Product 4", Price = 400 },
+                new ProductViewModel { Id = 5, Name = "Product 5", Price = 500 },
+            };
     }
 
     public void AddProduct(ProductViewModel product)
     {
-      products.Add(new Product
-      {
-        Id = products.Max(e => e.Id) + 1,
-        Name = product.Name,
-        Price = product.Price
-      });
+      product.Id = products.Max(e => e.Id) + 1;
+      products.Add(product);
     }
 
     public bool DeleteProduct(int id)
@@ -43,32 +39,12 @@ namespace Workshop.Datasource
 
     public ProductViewModel? GetProduct(int id)
     {
-      var product = products.SingleOrDefault(p => p.Id == id);
-      if (product == null)
-      {
-        return null;
-      }
-      return new ProductViewModel
-      {
-        Id = product.Id,
-        Name = product.Name,
-        Price = product.Price
-      };
+      return products.SingleOrDefault(p => p.Id == id);
     }
 
     public ProductListViewModel GetProducts()
     {
-      var viewModel = new ProductListViewModel()
-      {
-        Products = products.Select(p => new ProductViewModel
-        {
-          Id = p.Id,
-          Name = p.Name,
-          Price = p.Price
-        }).ToList(),
-      };
-      return viewModel;
+      return new ProductListViewModel(products);
     }
-
   }
 }

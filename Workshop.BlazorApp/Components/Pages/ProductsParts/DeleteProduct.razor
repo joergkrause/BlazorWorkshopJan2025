@@ -1,5 +1,6 @@
 ﻿@using Workshop.BlazorApp.Components._Shared
 @using Workshop.Datasource
+@using Workshop.ViewModels
 @inject IProductsRepository ProductsRepo
 
 <PageHeader>
@@ -8,15 +9,38 @@
     <small class="text-muted">#@Id</small>
   </Title>
 </PageHeader>
+<div class="alert alert-danger" role="alert">
+  Do you really want to delete product '@Product?.Name'?
+  <button class="btn btn-secondary" @onclick="Delete">Delete</button>
+</div>
 
 @code {
 
   [Parameter, EditorRequired]
   public int Id { get; set; }
 
+  [Parameter]
+  public EventCallback Changed { get; set; }
+
   protected override void OnParametersSet()
   {
+    Console.WriteLine($"DeleteProduct.OnParametersSet: Id={Id}");    
+  }
+
+  private ProductViewModel? Product => ProductsRepo.GetProduct(Id);
+
+  private async Task Delete()
+  {
     ProductsRepo.DeleteProduct(Id);
+    await NotifyChanged();
+  }
+
+  private async Task NotifyChanged()
+  {
+    if (Changed.HasDelegate)
+    {
+      await Changed.InvokeAsync();
+    }
   }
 
 }
