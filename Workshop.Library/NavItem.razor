@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+
+<div class="nav-item px-3">
+  <NavLink class="nav-link" href="@Link" >
+    <span class="@IconClass" aria-hidden="true"></span> @Text
+  </NavLink>
+</div>
+
+@code {
+
+  private string IconClass => $"bi bi-{Icon}-nav-menu";
+
+  [Parameter, EditorRequired]
+  public string Link { get; set; } = string.Empty;
+
+  [Parameter, EditorRequired]
+  public string Text { get; set; } = string.Empty;
+
+  [Parameter, EditorRequired]
+  public string Icon { get; set; } = default!;
+
+}
