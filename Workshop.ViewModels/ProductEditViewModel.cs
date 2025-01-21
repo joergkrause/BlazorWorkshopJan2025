@@ -15,7 +15,7 @@ namespace Workshop.ViewModels
     [Display(Name = "Artikelpreis", Description = "Das ist der Preis des Artikels in €", Order = 200)]
     [DataType(DataType.Currency)]
     [UIHint("€")]
-    [DisplayFormat(DataFormatString = "{0:00}")]
+    [DisplayFormat(DataFormatString = "{0.00}")]
     [AccessKey('p')]
     public decimal Price { get; set; }
   }

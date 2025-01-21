@@ -5,68 +5,20 @@
 @using Workshop.ViewModels.Attributes
 
 @typeparam TItem
+@inherits EditBase<TItem, string>
 
 <div class="form-group">
   <label for="@labelName">@labelText</label>
   <InputText id="@labelName" accesskey="@accessKey" tabindex="@tabIndex" class="form-control" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@For" />
   <ValidationMessage For="@For"></ValidationMessage>
-  <small>@description</small>
+  <small class="form-text">@description</small>
 </div>
 
 @code {
 
-  private string labelName;
-  private MarkupString labelText;
-  private char accessKey;
-  private int tabIndex;
-  private string description;
-
-  [Parameter, EditorRequired]
-  public TItem Item { get; set; }
-
-  [Parameter, EditorRequired]
-  public Expression<Func<string>> For { get; set; }
-
-  [Parameter]
-  public string Value { get; set; }
-
-  [Parameter]
-  public EventCallback<string> ValueChanged { get; set; }
-
   protected override void OnInitialized()
   {
-    var memberExpression = (MemberExpression)For.Body;
-    var property = (PropertyInfo)memberExpression.Member;
-    labelName = property.Name;
-
-    var accesskeyAttribute = property.GetCustomAttribute<AccessKeyAttribute>();
-    if (accesskeyAttribute != null)
-    {
-      accessKey = accesskeyAttribute.Key;
-    }
-
-    var displayAttribute = property.GetCustomAttribute<DisplayAttribute>();
-    if (displayAttribute != null)
-    {
-      labelText = GetStringWithHotkey(displayAttribute.Name ?? labelName, accessKey);
-      description = displayAttribute.Description ?? "Keine Hilfe";
-      tabIndex = displayAttribute.Order;
-    }
-    else
-    {
-      labelText = GetStringWithHotkey(labelName, accessKey);
-    }
-
-    MarkupString GetStringWithHotkey(string text, char hotkey)
-    {
-      var index = text.IndexOf(hotkey);
-      if (index == -1)
-      {
-        return new MarkupString(text);
-      }
-      return new MarkupString($"{text.Substring(0, index)}<u>{hotkey}</u>{text.Substring(index + 1)}");
-    }
-
+    base.OnInitialized();
   }
 
 }

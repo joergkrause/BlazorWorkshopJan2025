@@ -1,3 +1,4 @@
+using System.Globalization;
 using Workshop.BlazorApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,5 +27,9 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+var culture = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 app.Run();

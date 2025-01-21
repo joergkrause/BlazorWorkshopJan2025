@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq.Expressions
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+@using Workshop.ViewModels.Attributes
+
+@typeparam TItem
+@inherits EditBase<TItem, decimal> 
+
+<label for="@labelName">@labelText</label>
+<div class="input-group">  
+  <InputNumber TValue="decimal" id="@labelName" accesskey="@accessKey" tabindex="@tabIndex" class="form-control" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@For" />
+  <div class="input-group-text">@uihint</div>
+  <ValidationMessage For="@For"></ValidationMessage>  
+</div>
+<small class="form-text">@description</small>
+
+@code {
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+
+  }
+
+}

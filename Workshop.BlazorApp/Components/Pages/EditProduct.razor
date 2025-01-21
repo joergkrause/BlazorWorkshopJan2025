@@ -21,19 +21,17 @@
       <ValidationSummary />
 
       <TextEdit For="@(() => Product.Name)" Item="Product" @bind-Value="Product.Name"></TextEdit>
+      <NumEdit For="@(() => Product.Price)" Item="Product" @bind-Value="Product.Price"></NumEdit>
 
-      <label for="Price"><u>P</u>rice</label>
-      <div class="input-group">        
-        <InputNumber id="Price" accesskey="P" tabindex="20" class="form-control" @bind-Value="Product.Price" />
-        <div class="input-group-text">&euro;</div>
-        <ValidationMessage For="@(() => Product.Price)"></ValidationMessage>
+      <div class="m-2">
+        <button type="submit" class="btn btn-outline-success">Save</button>
+        <button class="btn btn-warning" @onclick="Cancel">Cancel</button>
       </div>
-      <button type="submit" class="btn btn-outline-success m-2">Save</button>
     </EditForm>
   </If>
   <Else>No Product!</Else>
 </Condition>
-<button class="btn btn-warning" @onclick="Cancel">Cancel</button>
+
 
 @code {
 
@@ -59,7 +57,7 @@
 
   private void Save()
   {
-    
+
   }
 
 }
