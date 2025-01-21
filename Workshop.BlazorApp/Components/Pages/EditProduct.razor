@@ -1,0 +1,47 @@
+﻿@page "/products/{Id:int}"
+
+@using Workshop.BlazorApp.Components._Shared
+@using Workshop.Datasource
+@using Workshop.Library
+@using Workshop.ViewModels
+
+@inject IProductsRepository ProductsRepo
+
+<PageHeader>
+  <Title>
+    <i>Edit Product</i>
+    <small class="text-muted">#@Id</small>
+  </Title>
+</PageHeader>
+<Condition Check="Product != null">
+  <If>
+    <dl class="row">
+      <dt class="col-sm-3">Name</dt>
+      <dd class="col-sm-9">@Product?.Name</dd>
+    </dl>
+    <dl class="row">
+      <dt class="col-sm-3">Price</dt>
+      <dd class="col-sm-9">@Product?.PriceString</dd>
+    </dl>
+  </If>
+  <Else>No Product!</Else>
+</Condition>
+
+@code {
+
+  [Parameter]
+  public int Id { get; set; }
+
+  private ProductViewModel? Product { get; set; }
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+  }
+
+  protected override void OnInitialized()
+  {
+    Product = ProductsRepo.GetProduct(Id);
+  }
+
+}

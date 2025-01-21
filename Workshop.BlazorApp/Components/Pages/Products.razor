@@ -1,4 +1,5 @@
 ﻿@page "/products"
+
 @using Workshop.BlazorApp.Components.Pages.ProductsParts
 @using Workshop.BlazorApp.Components._Shared
 @using Workshop.Datasource
@@ -6,7 +7,6 @@
 @using Workshop.ViewModels
 
 @inject IProductsRepository ProductsRepo
-
 
 
 <PageHeader>
@@ -18,22 +18,33 @@
   <Repeater TItem="ProductViewModel" Items="ProductList.Products">
     <ItemTemplate>
       <li @key="@context.Id">
-        <ProductItem Item="@context"></ProductItem>
+        <ProductItem Item="@context"></ProductItem> <NavLink href="@context.EditLink">Edit</NavLink> 
+        <button class="btn btn-danger btn-sm" @onclick="@(() => DeleteProduct(context.Id))">Delete</button>
       </li>
     </ItemTemplate>
   </Repeater>
 </ul>
-
+<Condition Check="deleteId != 0">
+  <If>
+    <DeleteProduct Id="deleteId"></DeleteProduct>
+  </If>
+</Condition>
 
 @code {
 
   private string Title => "Products"; // resx
   private ProductListViewModel ProductList => ProductsRepo.GetProducts();
+  private int deleteId;
 
   private void AddProduct()
   {
     var newProduct = new ProductViewModel { Name = "New Product", Price = 150 };
     ProductsRepo.AddProduct(newProduct);
+  }
+
+  private void DeleteProduct(int id)
+  {
+    deleteId = id;
   }
 
 }

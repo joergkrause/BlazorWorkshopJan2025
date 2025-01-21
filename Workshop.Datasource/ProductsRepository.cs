@@ -30,6 +30,32 @@ namespace Workshop.Datasource
       });
     }
 
+    public bool DeleteProduct(int id)
+    {
+      var product = products.SingleOrDefault(p => p.Id == id);
+      if (product == null)
+      {
+        return false;
+      }
+      products.Remove(product);
+      return true;
+    }
+
+    public ProductViewModel? GetProduct(int id)
+    {
+      var product = products.SingleOrDefault(p => p.Id == id);
+      if (product == null)
+      {
+        return null;
+      }
+      return new ProductViewModel
+      {
+        Id = product.Id,
+        Name = product.Name,
+        Price = product.Price
+      };
+    }
+
     public ProductListViewModel GetProducts()
     {
       var viewModel = new ProductListViewModel()

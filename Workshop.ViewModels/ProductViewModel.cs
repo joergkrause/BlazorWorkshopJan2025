@@ -7,5 +7,7 @@
     public int Price { get; set; }
 
     public string PriceString => $"{Price} €";
+
+    public string EditLink => $"/products/{Id}";
   }
 }
