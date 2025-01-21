@@ -21,11 +21,13 @@
       <ValidationSummary />
 
       <TextEdit For="@(() => Product.Name)" Item="Product" @bind-Value="Product.Name"></TextEdit>
-      <NumEdit For="@(() => Product.Price)" Item="Product" @bind-Value="Product.Price"></NumEdit>
+      <NumEdit For="@(() => Product.Price)" Item="Product" @bind-Value="Product.Price" @ref="numericEdit"></NumEdit>
 
       <div class="m-2">
         <button type="submit" class="btn btn-outline-success">Save</button>
         <button class="btn btn-warning" @onclick="Cancel">Cancel</button>
+        <button class="btn btn-primary" @onclick="Increment">Increment</button>
+        <button class="btn btn-primary" @onclick="Decrement">Decrement</button>
       </div>
     </EditForm>
   </If>
@@ -34,6 +36,8 @@
 
 
 @code {
+
+  private NumEdit<ProductEditViewModel>? numericEdit;
 
   [Parameter]
   public int Id { get; set; }
@@ -60,4 +64,13 @@
 
   }
 
+  private void Increment()
+  {
+    numericEdit?.Increment();
+  }
+
+  private void Decrement()
+  {
+    numericEdit?.Decrement();
+  }
 }

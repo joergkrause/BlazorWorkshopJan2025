@@ -10,6 +10,7 @@
 
 @inject IProductsRepository ProductsRepo
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 
 <PageHeader>
   <Count># @ProductList.Count</Count>
@@ -22,6 +23,7 @@
       <li @key="@context.Id">
         <ProductItem Item="@context"></ProductItem> <NavLink href="@context.EditLink">Edit</NavLink>
         <button class="btn btn-danger btn-sm" @onclick="@(() => DeleteProduct(context.Id))">Delete</button>
+        <button class="btn btn-secondary btn-sm" @onclick="@(() => Copy(context))">Copy to Clipbard</button>
       </li>
     </ItemTemplate>
   </Repeater>
@@ -34,6 +36,7 @@
 <SuccessMessage Duration="3000" Visible="deleteResult">
   Product deleted
 </SuccessMessage>
+<span class="badge rounded-pill bg-success invisible" @ref="badgeSpan">Success</span>
 
 @code {
 
@@ -41,6 +44,7 @@
   private ProductListViewModel ProductList => ProductsRepo.GetProducts();
   private int deleteId;
   private bool deleteResult;
+  private ElementReference badgeSpan;
 
   [Parameter]
   public string? Command { get; set; }
@@ -78,6 +82,11 @@
     // {
     //   ProductListChanged();
     // }
+  }
+
+  private async Task Copy(ProductViewModel product)
+  {
+    await JSRuntime.InvokeVoidAsync("copyTextToClipboard", $"{product.Name} #{product.Id}", badgeSpan);
   }
 
 }

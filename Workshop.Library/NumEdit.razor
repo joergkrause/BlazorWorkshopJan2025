@@ -20,7 +20,18 @@
   protected override void OnInitialized()
   {
     base.OnInitialized();
+  }
 
+  public void Increment()
+  {
+    Value += 10;
+    ValueChanged.InvokeAsync(Value);
+  }
+
+  public void Decrement()
+  {
+    Value -= 10;
+    ValueChanged.InvokeAsync(Value);
   }
 
 }
