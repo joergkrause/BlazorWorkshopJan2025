@@ -21,16 +21,17 @@
   <Repeater TItem="ProductViewModel" Items="ProductList.Products">
     <ItemTemplate>
       <li @key="@context.Id">
-        <ProductItem Item="@context"></ProductItem> <NavLink href="@context.EditLink">Edit</NavLink>
-        <button class="btn btn-danger btn-sm" @onclick="@(() => DeleteProduct(context.Id))">Delete</button>
+        <ProductItem Item="@context"></ProductItem> 
+        <button class="btn btn-primary btn-sm" @onclick="@(() => ProductAction(context.Id, "Edit"))">Edit</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => ProductAction(context.Id, "Delete"))">Delete</button>
         <button class="btn btn-secondary btn-sm" @onclick="@(() => Copy(context))">Copy to Clipbard</button>
       </li>
     </ItemTemplate>
   </Repeater>
 </ul>
-<Condition Check="deleteId != 0">
+<Condition Check="currentComponentType != null">
   <If>
-    <DeleteProduct Id="deleteId" Changed="ProductListChanged" Result="DeleteResult"></DeleteProduct>
+    <DynamicComponent Type="currentComponentType" Parameters="dynamicParameters"></DynamicComponent>
   </If>
 </Condition>
 <SuccessMessage Duration="3000" Visible="deleteResult">
@@ -42,8 +43,9 @@
 
   private string Title => "Products"; // resx
   private ProductListViewModel ProductList => ProductsRepo.GetProducts();
-  private int deleteId;
   private bool deleteResult;
+  private Type? currentComponentType;
+  private Dictionary<string, object> dynamicParameters = new Dictionary<string, object>();
   private ElementReference badgeSpan;
 
   [Parameter]
@@ -58,22 +60,37 @@
     }
   }
 
+  private void ProductAction(int id, string action)
+  {
+    switch (action)
+    {
+      case "Edit":
+        currentComponentType = typeof(EditProductInline);
+        dynamicParameters = new Dictionary<string, object> { { "Id", id } };
+        break;
+      case "Delete":
+        currentComponentType = typeof(DeleteProduct);
+        dynamicParameters = new Dictionary<string, object> { { "Id", id } };
+        break;
+    }
+  }
+
   private void AddProduct()
   {
     var newProduct = new ProductViewModel { Name = "New Product", Price = 150 };
     ProductsRepo.AddProduct(newProduct);
   }
 
-  private void DeleteProduct(int id)
-  {
-    deleteId = id;
-  }
+  // private void DeleteProduct(int id)
+  // {
+  //   deleteId = id;
+  // }
 
-  private void ProductListChanged()
-  {
-    deleteId = 0;
-    StateHasChanged();
-  }
+  // private void ProductListChanged()
+  // {
+  //   deleteId = 0;
+  //   StateHasChanged();
+  // }
 
   private void DeleteResult(bool result)
   {

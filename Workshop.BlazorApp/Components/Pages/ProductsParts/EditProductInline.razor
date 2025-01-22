@@ -1,6 +1,4 @@
-﻿@page "/products/{Id:int}"
-
-@using Workshop.BlazorApp.Components._Shared
+﻿@using Workshop.BlazorApp.Components._Shared
 @using Workshop.Datasource
 @using Workshop.Library
 @using Workshop.ViewModels
@@ -8,37 +6,21 @@
 @inject IProductsRepository ProductsRepo
 @inject NavigationManager Navigation
 
-<PageHeader>
-  <Title>
-    <i>Edit Product</i>
-    <small class="text-muted">#@Id</small>
-  </Title>
-</PageHeader>
 <Condition Check="Product != null">
   <If>
     <EditForm EditContext="editContext" OnValidSubmit="Save">
       <DataAnnotationsValidator />
       <ValidationSummary />
 
-      <InputTextSpecial IsInputGroup LabelText="@((MarkupString)"Name")" @bind-Value="Product.Name"></InputTextSpecial>
-
       <TextEdit For="@(() => Product.Name)" Item="Product" @bind-Value="Product.Name"></TextEdit>
       <NumEdit For="@(() => Product.Price)" Item="Product" @bind-Value="Product.Price" @ref="numericEdit"></NumEdit>
 
       <div class="m-2">
         <button type="submit" class="btn btn-outline-success">Save</button>
-        <button class="btn btn-warning" @onclick="Cancel">Cancel</button>
-        <button class="btn btn-primary" @onclick="Increment">Increment</button>
-        <button class="btn btn-primary" @onclick="Decrement">Decrement</button>
       </div>
     </EditForm>
   </If>
   <Else>No Product!</Else>
-</Condition>
-<Condition Check="mustSave">
-  <If>
-    <div class="alert alert-info">Form muss gespeichert werden!</div>
-  </If>
 </Condition>
 
 @code {
@@ -61,17 +43,6 @@
         Price = product.Price
       };
     editContext = new EditContext(Product);
-    editContext.OnFieldChanged += NotifyFieldChanged;
-  }
-
-  private void NotifyFieldChanged(object? sender, FieldChangedEventArgs args)
-  {
-    mustSave = true;
-  }
-
-  private void Cancel()
-  {
-    Navigation.NavigateTo("/products");
   }
 
   private void Save(EditContext editContext)
@@ -84,13 +55,4 @@
     }
   }
 
-  private void Increment()
-  {
-    numericEdit?.Increment();
-  }
-
-  private void Decrement()
-  {
-    numericEdit?.Decrement();
-  }
 }

@@ -4,4 +4,22 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<EditForm Model="model">
+  <div class="form-group">
+    <label>Input:</label>
+  <input @bind="@model.MiniModel" @bind:event="oninput" class="form-control"></input>
+  </div>
+</EditForm>
+
+<output>@model.MiniModel</output>
+
+@code {
+
+  private Model model = new ();
+
+  class Model
+  {
+    public string MiniModel { get; set; }
+  }
+
+}
