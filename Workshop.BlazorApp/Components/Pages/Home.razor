@@ -1,4 +1,9 @@
 ﻿@page "/"
+@using System.Security.Claims
+
+@attribute [AllowAnonymous]
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Home</PageTitle>
 
@@ -7,19 +12,54 @@
 <EditForm Model="model">
   <div class="form-group">
     <label>Input:</label>
-  <input @bind="@model.MiniModel" @bind:event="oninput" class="form-control"></input>
+    <input @bind="@model.MiniModel" @bind:event="oninput" class="form-control"></input>
   </div>
 </EditForm>
 
 <output>@model.MiniModel</output>
 
+<Condition Check="_claims.Count() > 0">
+  <If>
+    <ul>
+      <Repeater Items="_claims">
+        <ItemTemplate>
+          <li>@context.Type &ndash; @context.Value</li>
+        </ItemTemplate>
+      </Repeater>
+    </ul>
+  </If>
+</Condition>
+
+
 @code {
 
-  private Model model = new ();
+  private Model model = new();
+  private string? _authMessage;
+  private string? _surnameMessage;
+  private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
 
   class Model
   {
     public string MiniModel { get; set; }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    var user = authState.User;
+
+    if (user != null && user.Identity!.IsAuthenticated)
+    {
+      _authMessage = $"{user.Identity.Name} is authenticated.";
+      _claims = user.Claims;
+      _surnameMessage =
+          $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
+    }
+    else
+    {
+      _authMessage = "The user is NOT authenticated.";
+    }
   }
 
 }

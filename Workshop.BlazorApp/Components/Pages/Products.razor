@@ -1,6 +1,8 @@
 ﻿@page "/products"
 @page "/products/command/{Command:alpha}"
 
+@attribute [Authorize]
+
 @inherits PageBase<ProductsState, ProductSelectors>
 
 @inject NavigationManager Navigation
