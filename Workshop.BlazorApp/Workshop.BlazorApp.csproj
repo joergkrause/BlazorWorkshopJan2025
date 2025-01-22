@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fluxor.Blazor.Web" Version="6.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Workshop.Datasource\Workshop.Datasource.csproj" />
     <ProjectReference Include="..\Workshop.Library\Workshop.Library.csproj" />
   </ItemGroup>

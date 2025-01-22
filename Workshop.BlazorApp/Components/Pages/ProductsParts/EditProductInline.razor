@@ -1,10 +1,4 @@
-﻿@using Workshop.BlazorApp.Components._Shared
-@using Workshop.Datasource
-@using Workshop.Library
-@using Workshop.ViewModels
-
-@inject IProductsRepository ProductsRepo
-@inject NavigationManager Navigation
+﻿@inherits PageBase<ProductsState, ProductSelectors>
 
 <Condition Check="Product != null">
   <If>
@@ -36,13 +30,14 @@
 
   protected override void OnInitialized()
   {
-    var product = ProductsRepo.GetProduct(Id);
+    base.OnInitialized();
+    var product = State.Value.Products.Products.Single(e => e.Id == Id);
     Product = new ProductEditViewModel
       {
         Name = product.Name,
         Price = product.Price
       };
-    editContext = new EditContext(Product);
+    editContext = new EditContext(Product);    
   }
 
   private void Save(EditContext editContext)
@@ -50,7 +45,7 @@
     if (editContext.Validate())
     {
       var model = editContext.Model as ProductEditViewModel;
-      // Save....
+      Dispatcher.Dispatch(SaveProduct(model!));
       mustSave = false;
     }
   }

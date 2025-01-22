@@ -1,14 +1,8 @@
 ﻿@page "/products"
 @page "/products/command/{Command:alpha}"
 
-@using Microsoft.AspNetCore.WebUtilities
-@using Workshop.BlazorApp.Components.Pages.ProductsParts
-@using Workshop.BlazorApp.Components._Shared
-@using Workshop.Datasource
-@using Workshop.Library
-@using Workshop.ViewModels
+@inherits PageBase<ProductsState, ProductSelectors>
 
-@inject IProductsRepository ProductsRepo
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 
@@ -16,6 +10,11 @@
   <Count># @ProductList.Count</Count>
   <Title><i>@Title</i></Title>
 </PageHeader>
+<Condition Check="State.Value.IsLoading">
+  <If>
+    Lade Icon...
+  </If>
+</Condition>
 <button class="btn btn-success" @onclick="AddProduct">Add Product</button>
 <ul>
   <Repeater TItem="ProductViewModel" Items="ProductList.Products">
@@ -42,7 +41,7 @@
 @code {
 
   private string Title => "Products"; // resx
-  private ProductListViewModel ProductList => ProductsRepo.GetProducts();
+  private ProductListViewModel ProductList => State.Value.Products;
   private bool deleteResult;
   private Type? currentComponentType;
   private Dictionary<string, object> dynamicParameters = new Dictionary<string, object>();
@@ -50,6 +49,12 @@
 
   [Parameter]
   public string? Command { get; set; }
+
+  protected override void OnInitialized()
+  {
+    Dispatcher.Dispatch(LoadProducts());
+    base.OnInitialized();
+  }
 
   protected override void OnParametersSet()
   {    
@@ -78,7 +83,8 @@
   private void AddProduct()
   {
     var newProduct = new ProductViewModel { Name = "New Product", Price = 150 };
-    ProductsRepo.AddProduct(newProduct);
+    // TODO: Action!
+    // ProductsRepo.AddProduct(newProduct);
   }
 
   // private void DeleteProduct(int id)
