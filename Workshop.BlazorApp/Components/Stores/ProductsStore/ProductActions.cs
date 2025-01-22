@@ -14,6 +14,8 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
 
     public record EditProductAction(ProductViewModel Product);
 
+    public record MustSaveChangeAction(bool MustSave) : ISaveAction;
+
     public static LoadProductsAction LoadProducts() => new();
     public static LoadProductsSuccessAction LoadProductsSuccess(ProductListViewModel products) => new(products);
     public static LoadProductsFailureAction LoadProductsFailure(string error) => new(error);
@@ -23,5 +25,7 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
     public static SaveProductFailureAction SaveProductFailure(string error) => new(error);
 
     public static EditProductAction EditProduct(ProductViewModel product) => new(product);
+
+    public static MustSaveChangeAction MustSaveChange(bool mustSave) => new(mustSave);
   }
 }

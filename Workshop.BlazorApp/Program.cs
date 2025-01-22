@@ -1,5 +1,7 @@
+using Fluxor;
 using System.Globalization;
 using Workshop.BlazorApp.Components;
+using Workshop.BlazorApp.Components.Stores.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddRepositories();
+
+builder.Services.AddStores(typeof(Program).Assembly);
 
 var app = builder.Build();
 

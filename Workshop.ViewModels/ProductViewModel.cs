@@ -9,5 +9,15 @@
     public string PriceString => $"{Price} €";
 
     public string EditLink => $"/products/{Id}";
+
+    public ProductEditViewModel GetProductEditViewModel()
+    {
+      return new ProductEditViewModel
+      {
+        Name = Name,
+        Price = Price
+      };
+    }
+
   }
 }

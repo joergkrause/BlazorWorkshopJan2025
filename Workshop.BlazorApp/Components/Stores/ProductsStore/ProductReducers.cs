@@ -30,9 +30,12 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
       return action switch
       {
         // TODO: model konvertieren
-        SaveProductAction saveProductAction => state with { IsSaving = true, PreviousProduct = saveProductAction.Product, Error = string.Empty },
+        SaveProductAction saveProductAction => state with { IsSaving = true, PreviousProduct = saveProductAction.Product.GetProductViewModel(), Error = string.Empty },
         SaveProductSuccessAction _ => state with { IsSaving = false, Error = string.Empty },
         SaveProductFailureAction saveProductFailureAction => state with { IsSaving = false, Error = saveProductFailureAction.Error },
+
+        MustSaveChangeAction mustSaveChangeAction => state with { MustSave = mustSaveChangeAction.MustSave },
+
         _ => state
       };
     }

@@ -15,6 +15,7 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
     {
       try
       {
+        await Task.Delay(5000);
         var products = productsRepository.GetProducts();
         dispatcher.Dispatch(LoadProductsSuccess(products));
       }
@@ -23,6 +24,26 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
         dispatcher.Dispatch(LoadProductsFailure(ex.Message));
       }
     }
+
+    [EffectMethod]
+    public async Task HandleSaveProductAction(SaveProductAction action, IDispatcher dispatcher)
+    {
+      try
+      {
+        await Task.Delay(5000);
+        productsRepository.AddProduct(action.Product.GetProductViewModel());
+        
+        dispatcher.Dispatch(SaveProductSuccess(action.Product.GetProductViewModel()));
+        dispatcher.Dispatch(MustSaveChange(false));
+
+        navigationManager.NavigateTo("/products");
+      }
+      catch (Exception ex)
+      {
+        dispatcher.Dispatch(SaveProductFailure(ex.Message));
+      }
+    }
+
 
   }
 }

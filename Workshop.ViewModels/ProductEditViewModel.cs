@@ -18,5 +18,15 @@ namespace Workshop.ViewModels
     [DisplayFormat(DataFormatString = "{0.00}")]
     [AccessKey('p')]
     public decimal Price { get; set; }
+
+    public ProductViewModel GetProductViewModel()
+    {
+      return new ProductViewModel
+      {
+        Name = Name,
+        Price = Price
+      };
+    }
+
   }
 }
