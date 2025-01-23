@@ -14,6 +14,7 @@
     {
       return new ProductEditViewModel
       {
+        Id = Id,
         Name = Name,
         Price = Price
       };

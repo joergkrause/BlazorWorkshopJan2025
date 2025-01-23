@@ -5,6 +5,9 @@ namespace Workshop.ViewModels
 {
   public class ProductEditViewModel
   {
+
+    public int Id { get; set; }
+
     [Required]
     [StringLength(100)]
     [Display(Name = "Produktname", Description ="Das ist der Name des Produkts", Order = 100)]
@@ -23,6 +26,7 @@ namespace Workshop.ViewModels
     {
       return new ProductViewModel
       {
+        Id = Id,
         Name = Name,
         Price = Price
       };

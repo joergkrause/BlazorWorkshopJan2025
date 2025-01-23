@@ -15,7 +15,7 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
     {
       try
       {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         var products = productsRepository.GetProducts();
         dispatcher.Dispatch(LoadProductsSuccess(products));
       }
@@ -30,8 +30,8 @@ namespace Workshop.BlazorApp.Components.Stores.ProductsStore
     {
       try
       {
-        await Task.Delay(5000);
-        productsRepository.AddProduct(action.Product.GetProductViewModel());
+        await Task.Delay(1000);
+        productsRepository.UpdateProduct(action.Product.GetProductViewModel());
         
         dispatcher.Dispatch(SaveProductSuccess(action.Product.GetProductViewModel()));
         dispatcher.Dispatch(MustSaveChange(false));

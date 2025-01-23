@@ -9,6 +9,8 @@ namespace Workshop.Datasource
 
     void AddProduct(ProductViewModel product);
 
+    void UpdateProduct(ProductViewModel product);
+
     ProductViewModel? GetProduct(int id);
 
     bool DeleteProduct(int id);
