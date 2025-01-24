@@ -3,15 +3,20 @@ using Workshop.ViewModels;
 
 namespace Workshop.Datasource
 {
-  public interface IProductsRepository
+  public interface IProductsReadOnlyRepository
   {
     ProductListViewModel GetProducts();
 
+    ProductViewModel? GetProduct(int id);
+
+  }
+
+  public interface IProductsRepository : IProductsReadOnlyRepository
+  {
+    
     void AddProduct(ProductViewModel product);
 
     void UpdateProduct(ProductViewModel product);
-
-    ProductViewModel? GetProduct(int id);
 
     bool DeleteProduct(int id);
   }
