@@ -15,7 +15,6 @@
 
 <PageTitle>Home</PageTitle>
 
-
 <Container>
   <Row>
     <Column>
@@ -35,36 +34,46 @@
     </Column>
   </Row>
 </Container>
-<pre>
-  Text              <del>entfällt</del>            oder             
-  
-  
-  
-  
-  
-  <ins>Eingefügt.</ins>
-</pre>
-<output> @model.MiniModel</output>
 
-<Condition Check="_claims.Count() > 0">
-  <If>
-    <ul>
-      <Repeater Items="_claims">
-        <ItemTemplate>
-          <li>@context.Type &ndash; @context.Value</li>
-        </ItemTemplate>
-      </Repeater>
-    </ul>
-  </If>
-</Condition>
+<button type="button" class="btn btn-info btn-sm" @onclick="ModalOpen">Show Claims</button>
 
+<Modal @ref="modal">
+  <Title>Claims</Title>
+  <Body>
+    <Condition Check="_claims.Count() > 0">
+      <If>
+        <ul>
+          <Repeater Items="_claims">
+            <ItemTemplate>
+              <li>@context.Type &ndash; @context.Value</li>
+            </ItemTemplate>
+          </Repeater>
+        </ul>
+      </If>
+    </Condition>
+  </Body>
+  <Footer>
+    <button type="button" class="btn btn-primary btn-sm" @onclick="ModalClose">Close</button>
+  </Footer>
+</Modal>
 
 @code {
 
+  private Modal? modal;
   private Model model = new();
   private string? _authMessage;
   private string? _surnameMessage;
   private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+
+  private void ModalClose()
+  {
+    modal?.Close();
+  }
+
+  private void ModalOpen()
+  {
+    modal?.Open();
+  }
 
   class Model
   {

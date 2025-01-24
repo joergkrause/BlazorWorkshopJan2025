@@ -9,3 +9,10 @@
       }, 2000);
     });
 }
+window.registerBackdrop = (modalRef) => {
+  document.addEventListener("click", event => {
+    if (event.target === modalRef) {
+      DotNet.invokeMethodAsync("Workshop.Library", "CloseBackdrop");
+    }
+  });
+}

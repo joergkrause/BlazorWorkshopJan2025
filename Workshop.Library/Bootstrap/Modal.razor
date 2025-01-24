@@ -1,0 +1,84 @@
+﻿@using Microsoft.JSInterop
+
+@inject IJSRuntime JSRuntime
+
+<div class="@ModelCssClass" tabindex="-1" style="@ShowModelStyle" @ref="modalRef" id="backDrop">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">@Title</h5>
+        <button type="button" @onclick="Close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>@Body</p>
+      </div>
+      <div class="modal-footer">
+        @Footer
+      </div>
+    </div>
+  </div>
+</div>
+@if (showBackdrop)
+{
+  <div class="modal-backdrop fade show" @onclick="Close"></div>
+}
+@code {
+
+  // Version 2
+  private ElementReference modalRef;
+
+  private bool showBackdrop;
+  private bool showModal;
+
+  private string ModelCssClass => $"modal {(showModal ? "show" : "")}";
+  private string ShowModelStyle => $"display: {(showModal ? "block" : "none")}";
+
+  [Parameter]
+  public RenderFragment? Title { get; set; }
+
+  [Parameter]
+  public RenderFragment? Body { get; set; }
+
+  [Parameter]
+  public RenderFragment? Footer { get; set; }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender) {
+      await JSRuntime.InvokeVoidAsync("registerBackdrop", modalRef);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    ModalService.Instance.ModalInstance = this;
+  }
+
+  public void Close()
+  {
+    // Close the modal
+    showModal = false;
+    showBackdrop = false;
+  }
+
+  public void Open()
+  {
+    // Open the modal
+    showModal = true;
+    showBackdrop = true;
+  }
+
+  [JSInvokable("CloseBackdrop")]
+  public static Task CloseFromBackdrop()
+  {
+    ModalService.Instance.ModalInstance?.Close();
+    return Task.CompletedTask;
+  }
+  
+  public class ModalService
+  {
+    public static ModalService Instance { get; } = new ModalService();
+    public Modal? ModalInstance { get; set; }
+  }
+
+}
