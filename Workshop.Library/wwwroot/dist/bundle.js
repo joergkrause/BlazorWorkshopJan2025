@@ -1,0 +1,1 @@
+window.copyTextToClipboard=(e,i)=>{navigator.clipboard.writeText(e).then((()=>{i.innerText="Copied!",i.classList.remove("invisible"),setTimeout((()=>{i.innerText="Copy",i.classList.add("invisible")}),2e3)}))},window.registerBackdrop=e=>{document.addEventListener("click",(i=>{i.target===e&&DotNet.invokeMethodAsync("Workshop.Library","CloseBackdrop")}))};

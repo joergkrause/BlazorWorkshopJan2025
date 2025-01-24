@@ -8,7 +8,7 @@ module.exports = {
   entry: ['./wwwroot/workshop.js', './src/styles/main.scss'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '/wwwroot/dist')
+    path: path.resolve(__dirname, 'wwwroot/dist')
   },
   module: {
     rules: [
