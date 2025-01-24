@@ -10,11 +10,20 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bootstrap": "^5.3.3"
+    "bootstrap": "^5.3.3",
+    "boxicons": "2.1.4",
+    "@fortawesome/fontawesome-free": "^5.15.4"
   },
   "devDependencies": {
     "sass": "^1.83.4",
     "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "copy-webpack-plugin": "^12.0.2",
+    "mini-css-extract-plugin": "^2.9.2",
+    "terser-webpack-plugin": "^5.3.11",
+    "css-loader": "7.1.2",
+    "style-loader": "3.3.1",
+    "sass-loader": "12.2.0",
+    "file-loader": "6.2.0"
   }
 }
