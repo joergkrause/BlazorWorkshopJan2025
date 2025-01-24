@@ -1,22 +1,50 @@
 ﻿@page "/"
 @using System.Security.Claims
+@using Workshop.Library.Bootstrap
+@using Workshop.Library.Bootstrap.Models
 
 @attribute [AllowAnonymous]
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+<style>
+  label {
+    color: red !important;
+  }
+</style>
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-<EditForm Model="model">
-  <div class="form-group">
-    <label>Input:</label>
-    <input @bind="@model.MiniModel" @bind:event="oninput" class="form-control"></input>
-  </div>
-</EditForm>
+<Container>
+  <Row>
+    <Column>
+      <h1>Hello, world!</h1>
+    </Column>
+  </Row>
+  <Row>
+    <Column>
 
-<output>@model.MiniModel</output>
+      <EditForm Model="model">
+        <FormGroup>
+          <label style="color: green !important;">Input:</label>
+          <input @bind="@model.MiniModel" @bind:event="oninput" class="form-control"></input>
+        </FormGroup>
+      </EditForm>
+
+    </Column>
+  </Row>
+</Container>
+<pre>
+  Text              <del>entfällt</del>            oder             
+  
+  
+  
+  
+  
+  <ins>Eingefügt.</ins>
+</pre>
+<output> @model.MiniModel</output>
 
 <Condition Check="_claims.Count() > 0">
   <If>

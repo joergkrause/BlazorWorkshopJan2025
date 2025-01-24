@@ -2,19 +2,23 @@
 @using System.Linq.Expressions
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
+@using Workshop.Library.Bootstrap
 @using Workshop.ViewModels.Attributes
 
 @typeparam TItem
 @inherits EditBase<TItem, string>
 
-<div class="form-group">
+<FormGroup>
   <label for="@labelName">@labelText</label>
   <InputText id="@labelName" accesskey="@accessKey" tabindex="@tabIndex" class="form-control" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@For" />
   <ValidationMessage For="@For"></ValidationMessage>
   <small class="form-text">@description</small>
-</div>
+</FormGroup>
 
 @code {
+
+  [CascadingParameter]
+  public EditContext EditContext { get; set; }
 
   protected override void OnInitialized()
   {

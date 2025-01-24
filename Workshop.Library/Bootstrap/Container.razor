@@ -1,0 +1,15 @@
+﻿<div class="@cssClass">
+  @ChildContent
+</div>
+
+@code {
+
+  private string cssClass => $"container{(Fluid ? "-fluid" : "")}";
+
+  [Parameter]
+  public bool Fluid { get; set; }
+
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+
+}

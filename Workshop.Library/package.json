@@ -1,0 +1,20 @@
+{
+  "name": "workshop.library",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.83.4",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

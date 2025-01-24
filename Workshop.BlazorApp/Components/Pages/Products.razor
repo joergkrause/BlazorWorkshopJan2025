@@ -1,5 +1,6 @@
 ﻿@page "/products"
 @page "/products/command/{Command:alpha}"
+@using Workshop.Library.Bootstrap
 
 @attribute [Authorize]
 
@@ -18,6 +19,9 @@
   </If>
 </Condition>
 <button class="btn btn-success" @onclick="AddProduct">Add Product</button>
+
+<DataGrid Items="ProductList.Products" Condensed Bordered Striped Hover></DataGrid>
+
 <ul>
   <Repeater TItem="ProductViewModel" Items="ProductList.Products">
     <ItemTemplate>

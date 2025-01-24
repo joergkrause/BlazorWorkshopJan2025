@@ -1,0 +1,19 @@
+﻿<div class="@cssClass">
+  @ChildContent
+</div>
+
+@code {
+
+  private string cssClass => $"col{infix}{num}";
+  private string infix;
+  private string num => $"{Size}";
+
+  // ColSize.Is5.OnDesktop.Is6.OnMobile
+
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+
+  [Parameter]
+  public string Size { get; set; }
+
+}

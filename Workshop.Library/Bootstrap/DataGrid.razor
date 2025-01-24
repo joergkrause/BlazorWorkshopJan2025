@@ -1,0 +1,58 @@
+﻿@using Workshop.ViewModels.Attributes
+@typeparam TItem
+
+<table class="@cssClassTable">
+  <thead>
+    <tr>
+      @foreach (var header in headers)
+      {
+        <th>@header</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in Items)
+    {
+      <tr>
+        @foreach (var field in GetFields(item))
+        {
+          <td class="success">@field</td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>
+
+@code {
+
+  private string cssClassTable => $"table {(Striped ? "table-striped" : "")} {(Hover ? "table-hover" : "")} {(Condensed ? "table-condensed" : "")} {(Bordered ? "table-bordered" : "")}";
+  private IEnumerable<string> headers = [];
+
+  [Parameter]
+  public bool Striped { get; set; }
+
+  [Parameter]
+  public bool Hover { get; set; }
+
+  [Parameter]
+  public bool Condensed { get; set; }
+
+  [Parameter]
+  public bool Bordered { get; set; }
+
+  [Parameter]
+  public IList<TItem> Items { get; set; } = [];
+
+  protected override void OnInitialized()
+  {
+    var properties = typeof(TItem).GetProperties().Where(p => !p.GetCustomAttributes(typeof(HiddenAttribute), true).Any());
+    headers = properties.Select(p => p.Name).ToList();
+  }
+
+  private IEnumerable<string> GetFields(TItem item)
+  {
+    var properties = typeof(TItem).GetProperties().Where(p => !p.GetCustomAttributes(typeof(HiddenAttribute), true).Any());
+    return properties.Select(p => p.GetValue(item).ToString()).ToList();
+  }
+
+}
